@@ -7,7 +7,7 @@ from tqdm import tqdm
 from scipy.optimize import curve_fit
 import itertools
 
-def avalanches_brain(P:np.ndarray, T:int, qtde:int, file_loc:str, iteration_p:float, lamb:float, override_qtde=True):
+def streamlit_avalanches_brain(P:np.ndarray, T:int, qtde:int, file_loc:str, iteration_p:float, lamb:float, override_qtde=True):
     """Functions as an operating center that returns and manages files for ```qtde``` avalanches subject to a connectivity matrix ```P``` and a synaptic strength ```iteration_p```
 
     Args:
@@ -37,20 +37,9 @@ def avalanches_brain(P:np.ndarray, T:int, qtde:int, file_loc:str, iteration_p:fl
     
     # Se falta algum ainda a ser rodado
     if remaining > 0:
-        data_file = open(file_loc, 'a') # reabre o arquivo como append
-        spikes, durations = avalanche_maker(P, T, iteration_p, lamb, remaining) # Calcula as avalanches
-        processed = len(spikes) # COnta quantos sistemas de fato foram realizados
-        for spik, dur in zip(spikes, durations):
-            data_file.write(str(spik)+" \t"+str(dur)+" \n") # registra no arquivo
-        data_file.close()
-        data_file = open(file_loc, 'r+') # reabre pra leitura e atualização da quantidade de sistemas
-        data_file.seek(11)
-        processed_digits_len = len(str(processed+previously_ran_systems)) # Quantidade de dígitos do número que inidca o total de sistemas presentes no arquivo após nova rodagem
-        data_file.seek(data_file.tell() + (9-processed_digits_len)) # Anda na string de algarismos de sistemas até caber a quantidade atualizada
-        data_file.write(str(processed+previously_ran_systems)) # registra a quantidade total
-        data_file.close()
-        if processed < remaining: # Se não foram rodados todos, teve interrupção nas avalanches. Então encerra o programa
-            exit()
+        print("Ainda faltam sistemas. Recorra às versões locais, processe os dados e armazene-os aqui.")
+        print(f"Parâmetros: \n N={len(P)} \t {T=} \t {qtde=} \t {lamb=}\n")
+        exit()
     
     # finalmente, ler os sistemas do arquivo todo
     avalanche_table = pd.read_csv(file_loc, delimiter='\t', header=1)
