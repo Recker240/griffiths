@@ -237,8 +237,11 @@ def verify_independence(P, iteration_p, T):
 states = 2
 
 def rho_site_maker():
+    bib = st.selectbox("Selecione a biblioteca de exibição:",["Plotly", "Matplotlib"])
     st.write("Selecione os parâmetros desejados da rede")
     network_choosing_cols = st.columns(4)
+
+    
 
     folder = current_folder+"/Data/avalanches/"
     possible_M_0s = sorted(os.listdir(folder))
@@ -265,6 +268,7 @@ def rho_site_maker():
         T = int(selected_T[selected_T.index("=")+1:])
     folder += f"{selected_T}/{n=1}"
 
+    T_threshold = st.number_input("Informe um valor limite para sobrevivência de amostras", min_value=0, max_value=T, value=0, step=1, format="%i")
     processed_lambs = os.listdir(folder)
     for i, pl in processed_lambs:
         processed_lambs[i] = pl[:pl.index(t)-2]
@@ -275,44 +279,48 @@ def rho_site_maker():
     for i, lamb in selected_lambs:
         selected_lamb_numbers = lamb[lamb.index("=")+1:]
 
-    fig = rho_plotter(M_0, alpha, network_p, b, s)
-    
+    fig = rho_plotter(M_0, alpha, network_p, b, s, 'r1', selected_lamb_numbers, T, T_threshold, 0, show_dimension=False, plotstyle=bib)
+    if bib == "Plotly":
+        st.plotly_chart(fig)
+    elif bib == "Matplotlib":
+        st.pyplot(fig)
+
 
 class exec_independence_verifier:
     ...
-    custom_plot()
-    M_0, alpha, network_p, b, s = 2, 2, 1/4, 2, 12
-    gp_P, p_crit, net = Adjac_file_man(M_0, alpha, network_p, b, s, 'r1', asymetrical_finite_adjacency_maker)
-    T = 100
-    N = M_0 * b**s
-    k = degree_calc(gp_P)
-    grif_iteration_ps = np.array([1.4,1.675,2.0])*p_crit
-    random_iteration_ps = np.array([0.9,1.0,1.1])/int(k)
+    # custom_plot()
+    # M_0, alpha, network_p, b, s = 2, 2, 1/4, 2, 12
+    # gp_P, p_crit, net = Adjac_file_man(M_0, alpha, network_p, b, s, 'r1', asymetrical_finite_adjacency_maker)
+    # T = 100
+    # N = M_0 * b**s
+    # k = degree_calc(gp_P)
+    # grif_iteration_ps = np.array([1.4,1.675,2.0])*p_crit
+    # random_iteration_ps = np.array([0.9,1.0,1.1])/int(k)
 
-    rand_P = np.random.choice(N, (N, int(k)))
-    fig2, ax2 = plt.subplots(ncols=3,sharey=True,figsize=(18,4.2))
-    i=0
-    for iteration_p, sig in zip(grif_iteration_ps, random_iteration_ps):
-        ratio_gp, Prob_0_gp = verify_independence(gp_P, iteration_p, T)
-        ratio_rand, Prob_0_rand = verify_independence(rand_P, sig, T)
+    # rand_P = np.random.choice(N, (N, int(k)))
+    # fig2, ax2 = plt.subplots(ncols=3,sharey=True,figsize=(18,4.2))
+    # i=0
+    # for iteration_p, sig in zip(grif_iteration_ps, random_iteration_ps):
+    #     ratio_gp, Prob_0_gp = verify_independence(gp_P, iteration_p, T)
+    #     ratio_rand, Prob_0_rand = verify_independence(rand_P, sig, T)
         
-        if i==0:
-            finite_pts, = ax2[i].plot(ratio_gp - Prob_0_gp, 'x', label='Finite dimensional Topology on GP', color=my_colors[3])
-            random_pts, = ax2[i].plot(ratio_rand - Prob_0_rand, 'p', label='Random Network',color=my_colors[-1])
-        else:
-            finite_pts, = ax2[i].plot(ratio_gp - Prob_0_gp, 'x', color=my_colors[3])
-            random_pts, = ax2[i].plot(ratio_rand - Prob_0_rand, 'p',color=my_colors[-1])
-        ax2[i].set_xlabel(r"$t$")
-        i+=1
-    finite_pts.set_label('Finite dimensional Topology on GP')
-    random_pts.set_label('Random Network')
-    ax2[0].set_ylabel(r"$\frac{P(0,1)}{P(1)} - P(0)$")
-    fig2.legend(loc='upper center',ncols=2,bbox_to_anchor=(0.5,1.01),fancybox=True,shadow=True)
-    fig2.tight_layout()
-    fig_folder_loc = current_folder + f"/Figs/independence/{M_0=}/{alpha=}_{network_p=}/{b=}_{s=}/{T=}/"
-    os.makedirs(fig_folder_loc, exist_ok=True)
-    fig2.savefig(fig_folder_loc+f'over_time.png')
-    plt.show()
+    #     if i==0:
+    #         finite_pts, = ax2[i].plot(ratio_gp - Prob_0_gp, 'x', label='Finite dimensional Topology on GP', color=my_colors[3])
+    #         random_pts, = ax2[i].plot(ratio_rand - Prob_0_rand, 'p', label='Random Network',color=my_colors[-1])
+    #     else:
+    #         finite_pts, = ax2[i].plot(ratio_gp - Prob_0_gp, 'x', color=my_colors[3])
+    #         random_pts, = ax2[i].plot(ratio_rand - Prob_0_rand, 'p',color=my_colors[-1])
+    #     ax2[i].set_xlabel(r"$t$")
+    #     i+=1
+    # finite_pts.set_label('Finite dimensional Topology on GP')
+    # random_pts.set_label('Random Network')
+    # ax2[0].set_ylabel(r"$\frac{P(0,1)}{P(1)} - P(0)$")
+    # fig2.legend(loc='upper center',ncols=2,bbox_to_anchor=(0.5,1.01),fancybox=True,shadow=True)
+    # fig2.tight_layout()
+    # fig_folder_loc = current_folder + f"/Figs/independence/{M_0=}/{alpha=}_{network_p=}/{b=}_{s=}/{T=}/"
+    # os.makedirs(fig_folder_loc, exist_ok=True)
+    # fig2.savefig(fig_folder_loc+f'over_time.png')
+    # plt.show()
 
 class rho_several_rums:
     ...
