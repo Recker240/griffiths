@@ -263,11 +263,20 @@ def rho_site_maker():
     with network_choosing_cols[3]:
         selected_T = st.selectbox("Passos de tempo iterados:", possible_T)
         T = int(selected_T[selected_T.index("=")+1:])
-    folder += f"{selected_T}/"
+    folder += f"{selected_T}/{n=1}"
+
+    processed_lambs = os.listdir(folder)
+    for i, pl in processed_lambs:
+        processed_lambs[i] = pl[:pl.index(t)-2]
+
+    selected_lambs = st.multiselect("Selecione valores desejados para lambda. Eles são só para otimização, é possivel deselecioná-los posteriormente.", processed_lambs, on_change=lambda: time.sleep(4))
     
+    selected_lamb_numbers = []
+    for i, lamb in selected_lambs:
+        selected_lamb_numbers = lamb[lamb.index("=")+1:]
 
-
-
+    fig = rho_plotter(M_0, alpha, network_p, b, s)
+    
 
 class exec_independence_verifier:
     ...
