@@ -1,0 +1,2 @@
+Sistemas = 000000000
+Spikes 	 Durations 
