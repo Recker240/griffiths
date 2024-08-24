@@ -457,6 +457,8 @@ def streamlit_matplotlib_avalanche_plotter(M_0: int, alpha: float, network_p: fl
                 
         if len(fips)>2 and wherefit != 'no': ax_crack[0].scatter(exponents_matrix.loc[str(lamb), "τ"],exponents_matrix.loc[str(lamb), "τ_t"],linestyle="None",label=r"$\lambda = $"+ f"{round(lamb,4)}", color=spik_plot.get_color())
 
+        if len(fips)>2 and wherefit != 'no': ax_crack[0].errorbar(exponents_matrix.loc[str(lamb), "τ"],exponents_matrix.loc[str(lamb), "τ_t"], exponents_matrix.loc[str(lamb), "τ_t_std"],exponents_matrix.loc[str(lamb), "τ_std"], linestyle="None",label=r"$\lambda = $"+ f"{round(lamb,4)}", color=spik_plot.get_color())
+
     if len(fips) > 2 and wherefit != 'no':
         ax_crack[1].plot(fips, (exponents_matrix["τ_t"] - 1)/(exponents_matrix["τ"] - 1), label=r"$\frac{\tau _t - 1}{\tau - 1}$")
         ax_crack[1].plot(fips, exponents_matrix["Gamma"], label=r"$\frac{1}{\sigma \nu z}$")
