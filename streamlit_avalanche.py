@@ -1,7 +1,6 @@
 import numpy as np
 import os
 import pandas as pd
-from tqdm import tqdm
 from scipy.optimize import curve_fit
 from numba import njit
 import matplotlib.pyplot as plt
