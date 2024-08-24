@@ -156,7 +156,7 @@ def streamlit_plotly_avalanche_plotter(M_0: int, alpha: float, network_p: float,
     # threshold_dur, threshold_spikes = [], []
     data_folder_loc = current_folder + f"/Data/avalanches/{M_0=}/{alpha=}_{network_p=}/{b=}_{s=}/{T=}/"
     os.makedirs(data_folder_loc,exist_ok=True)
-    for i, lamb in enumerate(tqdm(fips, colour='green')):
+    for i, lamb in enumerate(fips, colour='green'):
         data_file_loc = data_folder_loc + f"net={mode[1:]}_lamb={lamb}.txt"
         
         avalanche_table = no_execution_avalanches_brain(N, T, qtde, data_file_loc, lamb)
@@ -297,7 +297,7 @@ def streamlit_matplotlib_avalanche_plotter(M_0: int, alpha: float, network_p: fl
     # threshold_dur, threshold_spikes = [], []
     data_folder_loc = current_folder + f"/Data/avalanches/{M_0=}/{alpha=}_{network_p=}/{b=}_{s=}/{T=}/"
     os.makedirs(data_folder_loc,exist_ok=True)
-    for i, lamb in enumerate(tqdm(fips, colour='green')):
+    for i, lamb in enumerate(fips, colour='green'):
         lamb = fips[i]
         data_file_loc = data_folder_loc + f"net={mode[1:]}_lamb={lamb}.txt"
         
